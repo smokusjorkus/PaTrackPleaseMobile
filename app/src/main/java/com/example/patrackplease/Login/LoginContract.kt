@@ -11,6 +11,7 @@ interface LoginContract {
         fun showLoginSuccess(message: String)
         fun showLoginFailed(message: String)
         fun navigateToHome()
+
     }
 
     interface Presenter {

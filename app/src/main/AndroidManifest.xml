@@ -10,14 +10,28 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PaTrackPlease">
 
+
+        <!-- STARTING POINT (LANDING PAGE) -->
         <activity
-            android:name=".Login.LoginActivity"
+            android:name=".LandingPage.LandingPageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <!-- LOGIN -->
+        <activity
+            android:name=".Login.LoginActivity"
+            android:exported="false" />
+
+
+        <!-- REGISTER -->
+        <activity
+            android:name=".Register.RegisterActivity"
+            android:exported="false" />
 
     </application>
 
