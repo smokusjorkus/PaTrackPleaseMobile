@@ -2,6 +2,7 @@ package com.example.patrackplease.api
 
 import LoginRequest
 import com.example.patrackplease.Login.LoginResponse
+import com.example.patrackplease.Register.RegisterRequest.RegisterRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
