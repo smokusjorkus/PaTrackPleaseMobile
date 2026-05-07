@@ -1,28 +1,41 @@
 package com.example.patrackplease.Register
 
 import android.util.Patterns
+import com.example.patrackplease.api.ApiClient
+import com.example.patrackplease.Register.RegisterRequest.RegisterRequest
+import kotlinx.coroutines.*
 
 class RegisterModel : RegisterContract.Model {
+    override fun register(firstName: String, lastName: String, email: String, password: String, confirmPass: String, callback: RegisterContract.Model.OnRegisterFinishedListener) {
+        val passwordRegex = "^(?=.*[A-Z])(?=.*[@#$%^&+=!]).*$".toRegex()
 
-    override fun register(
-        name: String,
-        email: String,
-        password: String,
-        confirmPassword: String,
-        callback: RegisterContract.Model.OnRegisterFinishedListener
-    ) {
         when {
-            name.isBlank() -> callback.onNameError("Name cannot be empty")
-            email.isBlank() -> callback.onEmailError("Email cannot be empty")
-            !Patterns.EMAIL_ADDRESS.matcher(email).matches() ->
-                callback.onEmailError("Enter a valid email")
-            password.isBlank() -> callback.onPasswordError("Password cannot be empty")
+            firstName.isBlank() -> callback.onFirstNameError("First name is required")
+            lastName.isBlank() -> callback.onLastNameError("Last name is required")
+            !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> callback.onEmailError("Enter a valid email")
             password.length < 6 -> callback.onPasswordError("Password must be at least 6 characters")
-            confirmPassword.isBlank() ->
-                callback.onConfirmPasswordError("Confirm password cannot be empty")
-            password != confirmPassword ->
-                callback.onConfirmPasswordError("Passwords do not match")
-            else -> callback.onSuccess("Registration successful")
+            !password.contains(passwordRegex) -> callback.onPasswordError("Need 1 uppercase and 1 special character")
+            password != confirmPass -> callback.onConfirmPasswordError("Passwords do not match")
+
+            else -> {
+                val request = RegisterRequest(firstName, lastName, email, password)
+                CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        val response = ApiClient.apiService.register(request)
+                        withContext(Dispatchers.Main) {
+                            if (response.isSuccessful && response.body() != null) {
+                                callback.onSuccess(response.body()!!)
+                            } else {
+                                callback.onFailure("Registration failed: User may already exist")
+                            }
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            callback.onFailure("Server error: ${e.message}")
+                        }
+                    }
+                }
+            }
         }
     }
 }

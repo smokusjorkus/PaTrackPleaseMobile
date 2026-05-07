@@ -11,7 +11,7 @@ interface LoginContract {
         fun showLoginSuccess(message: String)
         fun showLoginFailed(message: String)
         fun navigateToHome()
-
+        // REMOVED: The weird "abstract fun LoginPresenter" line that was here
     }
 
     interface Presenter {
@@ -20,16 +20,12 @@ interface LoginContract {
     }
 
     interface Model {
-        fun login(
-            email: String,
-            password: String,
-            callback: OnLoginFinishedListener
-        )
+        fun login(email: String, password: String, callback: OnLoginFinishedListener)
 
         interface OnLoginFinishedListener {
             fun onEmailError(message: String)
             fun onPasswordError(message: String)
-            fun onSuccess(message: String)
+            fun onSuccess(response: LoginResponse) // Keep ONLY this one
             fun onFailure(message: String)
         }
     }

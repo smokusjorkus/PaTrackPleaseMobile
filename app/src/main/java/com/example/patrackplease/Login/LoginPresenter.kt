@@ -1,15 +1,21 @@
 package com.example.patrackplease.Login
 
+import com.example.patrackplease.Login.LoginResponse
+
 class LoginPresenter(
     private var view: LoginContract.View?,
     private val model: LoginContract.Model
 ) : LoginContract.Presenter, LoginContract.Model.OnLoginFinishedListener {
 
     override fun onLoginClicked(email: String, password: String) {
-        view?.clearErrors()
-        view?.showLoading()
+        view?.apply {
+            clearErrors()
+            showLoading()
+        }
         model.login(email, password, this)
     }
+
+    // --- Callbacks from the Model ---
 
     override fun onEmailError(message: String) {
         view?.hideLoading()
@@ -21,18 +27,25 @@ class LoginPresenter(
         view?.showPasswordError(message)
     }
 
-    override fun onSuccess(message: String) {
-        view?.hideLoading()
-        view?.showLoginSuccess(message)
-        view?.navigateToHome()
+    // This must match EXACTLY what is in LoginContract.Model.OnLoginFinishedListener
+    // This now matches the LoginResponse object defined in your API package
+    override fun onSuccess(response: LoginResponse) {
+        view?.apply {
+            hideLoading()
+            // We use response.message because the object contains the string from the server
+            showLoginSuccess(response.message)
+            navigateToHome()
+        }
     }
 
     override fun onFailure(message: String) {
-        view?.hideLoading()
-        view?.showLoginFailed(message)
+        view?.apply {
+            hideLoading()
+            showLoginFailed(message)
+        }
     }
 
     override fun onDestroy() {
-        view = null
+        view = null // Clears the reference to the Activity to prevent memory leaks
     }
 }

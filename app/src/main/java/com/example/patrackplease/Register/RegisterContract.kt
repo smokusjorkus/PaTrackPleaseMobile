@@ -1,11 +1,13 @@
 package com.example.patrackplease.Register
 
-interface RegisterContract {
+import com.example.patrackplease.Login.LoginResponse
 
+interface RegisterContract {
     interface View {
         fun showLoading()
         fun hideLoading()
-        fun showNameError(message: String)
+        fun showFirstNameError(message: String)
+        fun showLastNameError(message: String)
         fun showEmailError(message: String)
         fun showPasswordError(message: String)
         fun showConfirmPasswordError(message: String)
@@ -16,31 +18,20 @@ interface RegisterContract {
     }
 
     interface Presenter {
-        fun onRegisterClicked(
-            name: String,
-            email: String,
-            password: String,
-            confirmPassword: String
-        )
+        fun onRegisterClicked(firstName: String, lastName: String, email: String, password: String, confirmPass: String)
         fun onDestroy()
     }
 
     interface Model {
-        fun register(
-            name: String,
-            email: String,
-            password: String,
-            confirmPassword: String,
-            callback: OnRegisterFinishedListener
-        )
-
         interface OnRegisterFinishedListener {
-            fun onNameError(message: String)
+            fun onFirstNameError(message: String)
+            fun onLastNameError(message: String)
             fun onEmailError(message: String)
             fun onPasswordError(message: String)
             fun onConfirmPasswordError(message: String)
-            fun onSuccess(message: String)
+            fun onSuccess(response: LoginResponse)
             fun onFailure(message: String)
         }
+        fun register(firstName: String, lastName: String, email: String, password: String, confirmPass: String, callback: OnRegisterFinishedListener)
     }
 }

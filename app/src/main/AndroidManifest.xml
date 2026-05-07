@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,30 +11,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PaTrackPlease">
-
-
+        <activity
+            android:name=".DashboardActivity"
+            android:exported="false" />
         <!-- STARTING POINT (LANDING PAGE) -->
         <activity
             android:name=".LandingPage.LandingPageActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-
-        <!-- LOGIN -->
+        </activity> <!-- LOGIN -->
         <activity
             android:name=".Login.LoginActivity"
-            android:exported="false" />
-
-
-        <!-- REGISTER -->
+            android:exported="false" /> <!-- REGISTER -->
         <activity
             android:name=".Register.RegisterActivity"
             android:exported="false" />
-
     </application>
 
 </manifest>

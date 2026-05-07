@@ -85,6 +85,8 @@ class LandingPageActivity : Activity() {
         // ANIMATED GRADIENT BACKGROUND
         // ---------------------------
         startGradientAnimation(root)
+
+
     }
 
     // ---------------------------
