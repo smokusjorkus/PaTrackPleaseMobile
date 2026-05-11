@@ -1,4 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Primary Navigation Links -->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_add_task"
+            android:icon="@android:drawable/ic_menu_add"
+            android:title="Add New Task" />
+
+        <item
+            android:id="@+id/nav_dashboard"
+            android:icon="@android:drawable/ic_menu_myplaces"
+            android:title="Dashboard" />
+
+        <item
+            android:id="@+id/nav_your_tasks"
+            android:icon="@android:drawable/checkbox_on_background"
+            android:title="Your Tasks" />
+
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@android:drawable/ic_menu_info_details"
+            android:title="Profile" />
+    </group>
+
+    <!-- Account Options Section -->
+    <item android:title="Account">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@android:drawable/ic_lock_power_off"
+                android:title="Log out" />
+        </menu>
+    </item>
 </menu>

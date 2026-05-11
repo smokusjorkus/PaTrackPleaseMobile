@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
+    <!-- Required for Retrofit to connect to your backend -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/donkeymogicon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/donkeymogicon_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PaTrackPlease">
+        android:theme="@style/Theme.PaTrackPlease"
+        android:usesCleartextTraffic="true">
         <activity
-            android:name=".DashboardActivity"
-            android:exported="false" />
-        <!-- STARTING POINT (LANDING PAGE) -->
+            android:name=".Tasks.TaskActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
+
+        <!-- 1. LANDING PAGE ACTIVITY (The New Entry Point) -->
         <activity
             android:name=".LandingPage.LandingPageActivity"
             android:exported="true">
@@ -23,13 +26,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- LOGIN -->
+        </activity> <!-- 2. LOGIN ACTIVITY -->
         <activity
             android:name=".Login.LoginActivity"
-            android:exported="false" /> <!-- REGISTER -->
+            android:exported="false" /> <!-- 3. REGISTER ACTIVITY -->
         <activity
             android:name=".Register.RegisterActivity"
-            android:exported="false" />
+            android:exported="false" /> <!-- 4. DASHBOARD ACTIVITY -->
+        <activity
+            android:name=".Dashboard.DashboardActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+
     </application>
 
 </manifest>

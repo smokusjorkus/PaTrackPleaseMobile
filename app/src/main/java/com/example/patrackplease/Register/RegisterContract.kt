@@ -8,6 +8,7 @@ interface RegisterContract {
         fun hideLoading()
         fun showFirstNameError(message: String)
         fun showLastNameError(message: String)
+        fun showUsernameError(message: String) // Ensure this exists
         fun showEmailError(message: String)
         fun showPasswordError(message: String)
         fun showConfirmPasswordError(message: String)
@@ -18,7 +19,7 @@ interface RegisterContract {
     }
 
     interface Presenter {
-        fun onRegisterClicked(firstName: String, lastName: String, email: String, password: String, confirmPass: String)
+        fun onRegisterClicked(firstName: String, lastName: String, username: String, email: String, password: String, confirmPass: String)
         fun onDestroy()
     }
 
@@ -26,12 +27,13 @@ interface RegisterContract {
         interface OnRegisterFinishedListener {
             fun onFirstNameError(message: String)
             fun onLastNameError(message: String)
+            fun onUsernameError(message: String) // Ensure this exists
             fun onEmailError(message: String)
             fun onPasswordError(message: String)
             fun onConfirmPasswordError(message: String)
             fun onSuccess(response: LoginResponse)
             fun onFailure(message: String)
         }
-        fun register(firstName: String, lastName: String, email: String, password: String, confirmPass: String, callback: OnRegisterFinishedListener)
+        fun register(firstName: String, lastName: String, username: String, email: String, password: String, confirmPass: String, callback: OnRegisterFinishedListener)
     }
 }

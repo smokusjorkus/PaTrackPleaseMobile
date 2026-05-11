@@ -27,14 +27,31 @@ class LoginPresenter(
         view?.showPasswordError(message)
     }
 
-    // This must match EXACTLY what is in LoginContract.Model.OnLoginFinishedListener
-    // This now matches the LoginResponse object defined in your API package
+    // FIXED: Intercepting the success response to save the token and email
+    // ... inside LoginPresenter.kt ...
+
     override fun onSuccess(response: LoginResponse) {
-        view?.apply {
-            hideLoading()
-            // We use response.message because the object contains the string from the server
-            showLoginSuccess(response.message)
-            navigateToHome()
+        val token = response.token
+        val email = response.email // No longer response.user?.email
+
+        if (token != null && email != null) {
+            view?.apply {
+                hideLoading()
+                showLoginSuccess(response.message ?: "Login Successful")
+            }
+
+            if (view is LoginActivity) {
+                (view as LoginActivity).onLoginSuccessSaveData(token, email)
+            } else {
+                view?.navigateToHome()
+            }
+        } else {
+            // Only show failure if the data is ACTUALLY missing
+            view?.apply {
+                hideLoading()
+                showLoginFailed("Error: Missing credentials from server.")
+            }
+            android.util.Log.e("LOGIN_DEBUG", "Token: $token, Email: $email")
         }
     }
 

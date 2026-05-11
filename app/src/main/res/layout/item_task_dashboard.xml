@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="4dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
+    app:cardBackgroundColor="#00000000"> <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="12dp">
+
+    <View
+        android:id="@+id/colorIndicator"
+        android:layout_width="4dp"
+        android:layout_height="0dp"
+        android:background="#FFB300"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTaskTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:fontFamily="@font/outfit_regular"
+        android:textColor="#212121"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/colorIndicator"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Dashboard Task Preview" />
+
+    <TextView
+        android:id="@+id/tvTaskDesc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="#666666"
+        android:textSize="12sp"
+        android:fontFamily="@font/outfit_light"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintEnd_toEndOf="@id/tvTaskTitle"
+        app:layout_constraintStart_toStartOf="@id/tvTaskTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvTaskTitle"
+        tools:text="Short description for preview..." />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="#999999"
+        android:textSize="11sp"
+        android:fontFamily="@font/outfit_thin"
+        app:layout_constraintStart_toStartOf="@id/tvTaskTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvTaskDesc"
+        tools:text="May 13" />
+
+    <TextView
+        android:id="@+id/tvStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="#F0F0F0"
+        android:paddingHorizontal="4dp"
+        android:paddingVertical="1dp"
+        android:textColor="#333333"
+        android:textSize="9sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/outfit_regular"
+        app:layout_constraintBottom_toBottomOf="@id/tvDate"
+        app:layout_constraintStart_toEndOf="@id/tvDate"
+        app:layout_constraintTop_toTopOf="@id/tvDate"
+        tools:text="PENDING" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

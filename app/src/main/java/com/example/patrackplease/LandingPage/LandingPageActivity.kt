@@ -1,5 +1,5 @@
 package com.example.patrackplease.LandingPage
-import com.example.patrackplease.utils.GradientUtils.blend
+
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Intent
@@ -9,10 +9,13 @@ import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity // Fixed inheritance
+import com.example.patrackplease.Dashboard.DashboardActivity
 import com.example.patrackplease.Login.LoginActivity
 import com.example.patrackplease.R
 import com.example.patrackplease.Register.RegisterActivity
+import com.example.patrackplease.utils.GradientUtils.blend
+import com.example.patrackplease.utils.SessionManager // Imported SessionManager
 
 class LandingPageActivity : Activity() {
 
@@ -21,6 +24,18 @@ class LandingPageActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // ---------------------------
+        // PROTECTED ROUTE CHECK (The Bouncer)
+        // ---------------------------
+        val sessionManager = SessionManager(this)
+        if (sessionManager.isLoggedIn()) {
+            // User is already logged in -> Teleport them straight to the Dashboard
+            startActivity(Intent(this, DashboardActivity::class.java))
+            finish()
+            return // Stop rendering the Landing Page
+        }
+
         setContentView(R.layout.landingpage)
 
         // ---------------------------
@@ -85,8 +100,6 @@ class LandingPageActivity : Activity() {
         // ANIMATED GRADIENT BACKGROUND
         // ---------------------------
         startGradientAnimation(root)
-
-
     }
 
     // ---------------------------
@@ -120,9 +133,4 @@ class LandingPageActivity : Activity() {
 
         animator.start()
     }
-
-    // ---------------------------
-    // COLOR BLENDING FUNCTION
-    // ---------------------------
-
 }

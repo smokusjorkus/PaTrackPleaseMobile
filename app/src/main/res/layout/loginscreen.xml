@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_gradient"
-    android:padding="24dp">
-
+    android:padding="24dp"
+    android:theme="@style/Theme.MaterialComponents.Light.NoActionBar">
 
     <!-- WHITE CONTAINER (CARD) -->
     <RelativeLayout
@@ -16,7 +17,6 @@
         android:background="@drawable/input_container"
         android:padding="20dp"
         android:elevation="6dp">
-
 
         <!-- Title -->
         <TextView
@@ -56,18 +56,28 @@
             android:layout_marginTop="30dp"
             android:fontFamily="@font/outfit_light"/>
 
-        <!-- Password -->
-        <EditText
-            android:id="@+id/etPassword"
+        <!-- Password Wrapper -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:padding="14dp"
-            android:background="@drawable/input_field"
             android:layout_below="@id/etEmail"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/outfit_light"/>
+            app:endIconMode="password_toggle"
+            app:endIconTint="#757575"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="none">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:padding="14dp"
+                android:background="@drawable/input_field"
+                android:fontFamily="@font/outfit_light"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Login Button -->
         <Button
@@ -76,7 +86,7 @@
             android:layout_height="wrap_content"
             android:text="Login"
             android:textAllCaps="false"
-            android:layout_below="@id/etPassword"
+            android:layout_below="@id/tilPassword"
             android:layout_marginTop="24dp"
             android:background="@drawable/button_primary"
             android:textColor="#FFFFFF"

@@ -11,26 +11,33 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import com.example.patrackplease.DashboardActivity
+import androidx.appcompat.app.AppCompatActivity // MUST BE IMPORTED
+import com.example.patrackplease.Dashboard.DashboardActivity
 import com.example.patrackplease.Extensions.showToast
 import com.example.patrackplease.R
 import com.example.patrackplease.Register.RegisterActivity
 import com.example.patrackplease.utils.GradientUtils.blend
+import com.example.patrackplease.utils.SessionManager // Import your SessionManager
+import com.google.android.material.textfield.TextInputEditText // MUST BE IMPORTED
 
+// FIXED: Actually changed to AppCompatActivity()
 class LoginActivity : Activity(), LoginContract.View {
 
     private lateinit var etEmail: EditText
-    private lateinit var etPassword: EditText
+    private lateinit var etPassword: TextInputEditText
     private lateinit var btnLogin: Button
     private lateinit var progressBar: ProgressBar
     private lateinit var tvRegister: TextView
 
     private lateinit var presenter: LoginContract.Presenter
+    private lateinit var sessionManager: SessionManager // Declare SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.loginscreen)
+
+        // Initialize SessionManager
+        sessionManager = SessionManager(this)
 
         // 1. Initialize Views
         etEmail = findViewById(R.id.etEmail)
@@ -57,7 +64,7 @@ class LoginActivity : Activity(), LoginContract.View {
         setupBackgroundAnimation()
     }
 
-    // --- Contract Implementation (The "Behavior" of the View) ---
+    // --- Contract Implementation ---
 
     override fun showLoading() {
         progressBar.visibility = View.VISIBLE
@@ -92,14 +99,21 @@ class LoginActivity : Activity(), LoginContract.View {
         showToast(message)
     }
 
+    // UPDATED: Now requires the token and email so we can save them!
+    fun onLoginSuccessSaveData(token: String, email: String) {
+        sessionManager.saveAuthToken(token)
+        sessionManager.saveUserEmail(email)
+        navigateToHome()
+    }
+
     override fun navigateToHome() {
         val intent = Intent(this, DashboardActivity::class.java)
         startActivity(intent)
-        finish() // Removes LoginActivity from the backstack
+        finish()
     }
 
     override fun onDestroy() {
-        presenter.onDestroy() // Detach presenter to prevent memory leaks
+        presenter.onDestroy()
         super.onDestroy()
     }
 

@@ -5,5 +5,6 @@ data class RegisterRequest(
     val lastName: String,
     val email: String,
     val password: String,
-    val username: String? = null // Optional, as it's nullable in your backend
+    val confirmPassword: String, // <-- YOU MUST ADD THIS
+    val username: String? = null
 )
