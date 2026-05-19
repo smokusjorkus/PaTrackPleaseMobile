@@ -13,8 +13,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
-        >
+        android:padding="16dp">
 
         <View
             android:id="@+id/colorIndicator"
@@ -30,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="120dp"
+            android:layout_marginEnd="48dp"
             android:fontFamily="@font/outfit_regular"
             android:textColor="#000000"
             android:textSize="18sp"
@@ -39,33 +38,32 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@id/colorIndicator"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Test Task"
-            />
+            tools:text="Test Task" />
 
         <TextView
             android:id="@+id/tvTaskDesc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
+            android:fontFamily="@font/outfit_light"
             android:textColor="#888888"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/tvTaskTitle"
             app:layout_constraintStart_toStartOf="@id/tvTaskTitle"
             app:layout_constraintTop_toBottomOf="@id/tvTaskTitle"
-            tools:text="This is a description from the backend"
-            android:fontFamily="@font/outfit_light"/>
+            tools:text="This is a description from the backend" />
 
         <TextView
             android:id="@+id/tvDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/outfit_thin"
             android:textColor="#666666"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="@id/tvTaskTitle"
             app:layout_constraintTop_toBottomOf="@id/tvTaskDesc"
-            tools:text="2026-05-13"
-            android:fontFamily="@font/outfit_thin"/>
+            tools:text="2026-05-13" />
 
         <TextView
             android:id="@+id/tvStatus"
@@ -73,6 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:background="#F0F0F0"
+            android:fontFamily="@font/outfit_regular"
             android:paddingHorizontal="6dp"
             android:paddingVertical="2dp"
             android:textColor="#333333"
@@ -81,80 +80,17 @@
             app:layout_constraintBottom_toBottomOf="@id/tvDate"
             app:layout_constraintStart_toEndOf="@id/tvDate"
             app:layout_constraintTop_toTopOf="@id/tvDate"
-            tools:text="UPCOMING"
-            android:fontFamily="@font/outfit_regular"/>
+            tools:text="UPCOMING" />
 
-        <LinearLayout
-            android:id="@+id/llActions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
+        <ImageButton
+            android:id="@+id/btnMenu"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="More options"
+            android:src="@drawable/ic_more_vert"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <Button
-                android:id="@+id/btnAlarm"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:text="Alarm"
-                android:textSize="11sp"
-                android:textColor="#000000"
-                android:backgroundTint="#F5F5F5"
-                android:textAllCaps="false"
-                android:padding="10dp"/>
-
-            <Button
-                android:id="@+id/btnEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:text="Edit"
-                android:textSize="11sp"
-                android:textColor="#000000"
-                android:backgroundTint="#FFEB3B"
-                android:textAllCaps="false"
-                android:padding="10dp"/>
-
-            <Button
-                android:id="@+id/btnDelete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:text="Del"
-                android:textSize="11sp"
-                android:textColor="#000000"
-                android:backgroundTint="#FF8A65"
-                android:textAllCaps="false"
-                android:padding="10dp"/>
-
-            <Button
-                android:id="@+id/btnDone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#00E676"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingHorizontal="8dp"
-                android:paddingVertical="4dp"
-                android:text="Done"
-                android:textAllCaps="false"
-                android:textColor="#000000"
-                android:textSize="11sp"
-                android:padding="10dp"/>
-        </LinearLayout>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
