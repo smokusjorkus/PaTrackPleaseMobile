@@ -135,44 +135,51 @@ class ProfileActivity : Activity(), ProfileContract.View {
     }
 
     override fun displayProfileData(username: String, email: String, profileImageUrl: String?) {
-        tvHeaderName.text = username
-        tvValueName.text = username
-        tvHeaderEmail.text = email
-        tvValueEmail.text = email
+        val safeUsername = username.trim().ifBlank { "Unknown User" }
+        val safeEmail = email.trim().ifBlank { "No email provided" }
 
-        val resolvedImageUrl = resolveProfileImageUrl(profileImageUrl)
+        tvHeaderName.text = safeUsername
+        tvValueName.text = safeUsername
+        tvHeaderEmail.text = safeEmail
+        tvValueEmail.text = safeEmail
 
-        if (resolvedImageUrl != null) {
-            ivProfilePicture.load(resolvedImageUrl) {
-                crossfade(true)
-                placeholder(R.drawable.ic_launcher_background)
-                error(R.drawable.ic_launcher_background)
-            }
-            ivProfileAvatar.load(resolvedImageUrl) {
-                crossfade(true)
-                placeholder(R.drawable.ic_launcher_background)
-                error(R.drawable.ic_launcher_background)
-            }
-        } else {
-            ivProfilePicture.setImageResource(R.drawable.ic_launcher_background)
-            ivProfileAvatar.setImageResource(R.drawable.ic_launcher_background)
-        }
+        loadProfileImage(ivProfilePicture, profileImageUrl)
+        loadProfileImage(ivProfileAvatar, profileImageUrl)
     }
 
     private fun resolveProfileImageUrl(profileImageUrl: String?): String? {
-        if (profileImageUrl.isNullOrBlank()) {
+        val normalizedUrl = profileImageUrl
+            ?.trim()
+            ?.takeUnless { it.isBlank() || it.equals("null", ignoreCase = true) }
+
+        if (normalizedUrl == null) {
             return null
         }
 
-        return if (profileImageUrl.startsWith("http://") || profileImageUrl.startsWith("https://")) {
-            profileImageUrl
+        return if (normalizedUrl.startsWith("http://") || normalizedUrl.startsWith("https://")) {
+            normalizedUrl
         } else {
             val baseUrl = "https://patrackpleasebackend.onrender.com"
-            if (profileImageUrl.startsWith("/")) {
-                "$baseUrl$profileImageUrl"
+            if (normalizedUrl.startsWith("/")) {
+                "$baseUrl$normalizedUrl"
             } else {
-                "$baseUrl/$profileImageUrl"
+                "$baseUrl/$normalizedUrl"
             }
+        }
+    }
+
+    private fun loadProfileImage(imageView: ImageView, profileImageUrl: String?) {
+        val resolvedImageUrl = resolveProfileImageUrl(profileImageUrl)
+
+        if (resolvedImageUrl == null) {
+            imageView.setImageResource(R.drawable.ic_launcher_background)
+            return
+        }
+
+        imageView.load(resolvedImageUrl) {
+            crossfade(true)
+            placeholder(R.drawable.ic_launcher_background)
+            error(R.drawable.ic_launcher_background)
         }
     }
 
