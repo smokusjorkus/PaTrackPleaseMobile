@@ -2,6 +2,7 @@ package com.example.patrackplease.Profile
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.graphics.BitmapFactory
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -17,16 +18,23 @@ import com.example.patrackplease.Dashboard.DashboardActivity
 import com.example.patrackplease.Tasks.TaskActivity
 import com.example.patrackplease.api.ApiClient
 import com.example.patrackplease.utils.SessionManager // <-- ADDED THIS IMPORT
-import coil.load
 
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import java.net.URL
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ProfileActivity : Activity(), ProfileContract.View {
 
     private lateinit var presenter: ProfileContract.Presenter
     private lateinit var sessionManager: SessionManager // <-- ADDED THIS
+    private val imageScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     private lateinit var tvHeaderName: TextView
     private lateinit var tvHeaderEmail: TextView
@@ -65,6 +73,7 @@ class ProfileActivity : Activity(), ProfileContract.View {
     override fun onDestroy() {
         super.onDestroy()
         presenter.detachView()
+        imageScope.cancel()
     }
 
     private fun initViews() {
@@ -176,10 +185,24 @@ class ProfileActivity : Activity(), ProfileContract.View {
             return
         }
 
-        imageView.load(resolvedImageUrl) {
-            crossfade(true)
-            placeholder(R.drawable.ic_launcher_background)
-            error(R.drawable.ic_launcher_background)
+        imageView.setImageResource(R.drawable.ic_launcher_background)
+
+        imageScope.launch {
+            try {
+                val bitmap = withContext(Dispatchers.IO) {
+                    URL(resolvedImageUrl).openStream().use { input ->
+                        BitmapFactory.decodeStream(input)
+                    }
+                }
+
+                if (bitmap != null) {
+                    imageView.setImageBitmap(bitmap)
+                } else {
+                    imageView.setImageResource(R.drawable.ic_launcher_background)
+                }
+            } catch (_: Exception) {
+                imageView.setImageResource(R.drawable.ic_launcher_background)
+            }
         }
     }
 
