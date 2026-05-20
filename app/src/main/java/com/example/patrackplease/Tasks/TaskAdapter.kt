@@ -20,7 +20,8 @@ import kotlinx.coroutines.launch
 class TaskAdapter(
     private var taskList: List<Task>,
     private val token: String,
-    private val onEditClick: (Task) -> Unit         // triggers the edit bottom sheet
+    private val onEditClick: (Task) -> Unit,
+    private val onAlarmClick: (Task) -> Unit
 ) : RecyclerView.Adapter<TaskAdapter.TaskViewHolder>() {
 
     class TaskViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -62,7 +63,7 @@ class TaskAdapter(
             popup.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.action_alarm  -> {
-                        handleAlarm(view.context, task)
+                        onAlarmClick(task)
                         true
                     }
                     R.id.action_edit   -> {
@@ -89,10 +90,6 @@ class TaskAdapter(
     fun updateTasks(newTasks: List<Task>) {
         taskList = newTasks
         notifyDataSetChanged()
-    }
-
-    private fun handleAlarm(context: Context, task: Task) {
-        Toast.makeText(context, "Alarm set for: ${task.taskName}", Toast.LENGTH_SHORT).show()
     }
 
     private fun handleDelete(context: Context, position: Int) {
