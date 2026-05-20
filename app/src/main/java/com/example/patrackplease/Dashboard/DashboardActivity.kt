@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.patrackplease.Login.LoginActivity
+import com.example.patrackplease.Profile.ProfileActivity
 import com.example.patrackplease.R
 import com.example.patrackplease.Tasks.TaskActivity
 import com.example.patrackplease.Tasks.TaskAdapter
@@ -115,18 +116,29 @@ class DashboardActivity : Activity() {
     }
 
     private fun setupBottomNavigation() {
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigation)
+
+        // 1. Set the active tab ONCE to match the current screen
         bottomNavigation.selectedItemId = R.id.nav_dashboard
+
         bottomNavigation.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.nav_dashboard -> true
+                R.id.nav_dashboard -> {
+                    // Already on Dashboard, do nothing
+                    true
+                }
                 R.id.nav_tasks -> {
+                    // 2. Launch the TaskActivity
                     startActivity(Intent(this, TaskActivity::class.java))
                     overridePendingTransition(0, 0)
                     finish()
                     true
                 }
                 R.id.nav_profile -> {
-                    Toast.makeText(this, "Navigating to Profile...", Toast.LENGTH_SHORT).show()
+                    // 3. Launch the ProfileActivity
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    finish()
                     true
                 }
                 else -> false

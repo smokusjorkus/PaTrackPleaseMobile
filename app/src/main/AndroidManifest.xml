@@ -13,11 +13,12 @@
         android:theme="@style/Theme.PaTrackPlease"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Profile.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".Tasks.TaskActivity"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"/>
-
-        <!-- 1. LANDING PAGE ACTIVITY (The New Entry Point) -->
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" /> <!-- 1. LANDING PAGE ACTIVITY (The New Entry Point) -->
         <activity
             android:name=".LandingPage.LandingPageActivity"
             android:exported="true">
@@ -37,7 +38,6 @@
             android:name=".Dashboard.DashboardActivity"
             android:exported="false"
             android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
-
     </application>
 
 </manifest>

@@ -1,35 +1,39 @@
 package com.example.patrackplease.Tasks
 
+
 import android.app.Activity
 import android.content.Intent
+import com.example.patrackplease.Profile.ProfileActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.patrackplease.Dashboard.DashboardActivity
 import com.example.patrackplease.Login.LoginActivity
 import com.example.patrackplease.R
+import com.example.patrackplease.models.Task
 import com.example.patrackplease.api.ApiClient
 import com.example.patrackplease.utils.SessionManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
+import org.w3c.dom.Text
 
 class TaskActivity : Activity() {
 
-    // Network & Scope
     private lateinit var sessionManager: SessionManager
     private val activityScope = MainScope()
 
-    // UI Components
     private lateinit var rvTasks: RecyclerView
     private lateinit var taskAdapter: TaskAdapter
+    private lateinit var tvPageSubtitle: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_task)
 
-        // --- AUTH GUARD ---
         sessionManager = SessionManager(this)
         if (!sessionManager.isLoggedIn()) {
             startActivity(Intent(this, LoginActivity::class.java))
@@ -37,11 +41,15 @@ class TaskActivity : Activity() {
             return
         }
 
-        // --- INITIALIZE UI ---
-        setupBottomNavigation() // <-- Notice this now calls the correct standard function
+        tvPageSubtitle = findViewById(R.id.tvPageSubtitle)   // initialize it here
+
+        setupBottomNavigation()
         setupRecyclerView()
 
-        // --- FETCH DATA ---
+        findViewById<Button>(R.id.btnAddNewTask).setOnClickListener {
+            openAddSheet()
+        }
+
         val email = sessionManager.getUserEmail()
         if (email != null) {
             fetchTasks(email)
@@ -54,9 +62,35 @@ class TaskActivity : Activity() {
         rvTasks = findViewById(R.id.rvTasks)
         rvTasks.layoutManager = LinearLayoutManager(this)
 
-        // Start with an empty list so the UI loads instantly
-        taskAdapter = TaskAdapter(emptyList())
+        val token = sessionManager.getToken() ?: ""
+        taskAdapter = TaskAdapter(
+            taskList = emptyList(),
+            token = token,
+            onEditClick = { task -> openEditSheet(task) }   // <-- this was missing
+        )
         rvTasks.adapter = taskAdapter
+    }
+
+    private fun openAddSheet() {
+        val token = sessionManager.getToken() ?: ""
+        val email = sessionManager.getUserEmail() ?: ""
+        TaskFormBottomSheet(
+            token        = token,
+            email        = email,
+            existingTask = null,
+            onSuccess    = { fetchTasks(email) }
+        ).show(fragmentManager, "AddTask")
+    }
+
+    private fun openEditSheet(task: Task) {
+        val token = sessionManager.getToken() ?: ""
+        val email = sessionManager.getUserEmail() ?: ""
+        TaskFormBottomSheet(
+            token        = token,
+            email        = email,
+            existingTask = task,
+            onSuccess    = { fetchTasks(email) }
+        ).show(fragmentManager, "EditTask")
     }
 
     private fun fetchTasks(email: String) {
@@ -65,20 +99,24 @@ class TaskActivity : Activity() {
                 val token = sessionManager.getToken()
                 val authHeader = "Bearer $token"
 
-                // Make the network call on the IO thread
                 val response = withContext(Dispatchers.IO) {
                     ApiClient.apiService.getTasks(authHeader, email)
                 }
 
                 if (response.isSuccessful && response.body() != null) {
                     val tasks = response.body()!!
-                    // Pass the fresh data to the adapter
                     taskAdapter.updateTasks(tasks)
-
-                    // Optional: Update your "7 tasks assigned to you" subtitle here
-                    // findViewById<TextView>(R.id.tvPageSubtitle).text = "${tasks.size} tasks assigned to you"
+                    tvPageSubtitle.text = when (tasks.size) {
+                        0    -> "No tasks assigned to you"
+                        1    -> "1 task assigned to you"
+                        else -> "${tasks.size} tasks assigned to you"
+                    }
                 } else {
-                    Toast.makeText(this@TaskActivity, "Failed to load tasks: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@TaskActivity,
+                        "Failed to load tasks: ${response.code()}",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             } catch (e: Exception) {
                 Toast.makeText(this@TaskActivity, "Network failed. Check connection.", Toast.LENGTH_SHORT).show()
@@ -90,24 +128,26 @@ class TaskActivity : Activity() {
     private fun setupBottomNavigation() {
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottomNavigation)
 
-        // Tells the bar to highlight the "Tasks" icon right when the page loads
+        // 1. Set the active tab ONCE to match the current screen
         bottomNavigation.selectedItemId = R.id.nav_tasks
 
         bottomNavigation.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_dashboard -> {
-                    // Go back to Dashboard
                     startActivity(Intent(this, DashboardActivity::class.java))
                     overridePendingTransition(0, 0)
                     finish()
                     true
                 }
                 R.id.nav_tasks -> {
-                    // Already here, do nothing
+                    // Already on Tasks, do nothing
                     true
                 }
                 R.id.nav_profile -> {
-                    Toast.makeText(this, "Navigating to Profile...", Toast.LENGTH_SHORT).show()
+                    // 2. Launch the ProfileActivity (Make sure to import it at the top of your file!)
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                    overridePendingTransition(0, 0)
+                    finish()
                     true
                 }
                 else -> false
@@ -117,7 +157,6 @@ class TaskActivity : Activity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        // CRITICAL: Prevent memory leaks when navigating away
         activityScope.cancel()
     }
 }
