@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.patrackplease.R
 import com.example.patrackplease.Dashboard.DashboardActivity
+import com.example.patrackplease.Login.LoginActivity
 import com.example.patrackplease.Tasks.TaskActivity
 import com.example.patrackplease.api.ApiClient
 import com.example.patrackplease.utils.SessionManager // <-- ADDED THIS IMPORT
@@ -98,6 +99,7 @@ class ProfileActivity : Activity(), ProfileContract.View {
         findViewById<Button>(R.id.btnChangeEmail).setOnClickListener { presenter.onChangeEmailClicked() }
         findViewById<Button>(R.id.btnChangePassword).setOnClickListener { presenter.onChangePasswordClicked() }
         findViewById<Button>(R.id.btnRemovePhoto).setOnClickListener { presenter.onRemovePhotoClicked() }
+        findViewById<Button>(R.id.btnLogout).setOnClickListener { showLogoutDialog() }
     }
 
     // --- CUSTOM BOTTOM NAVIGATION LOGIC ---
@@ -258,6 +260,24 @@ class ProfileActivity : Activity(), ProfileContract.View {
 
     override fun showChangePasswordDialog() {
         Toast.makeText(this, "Password reset flow triggered.", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showLogoutDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Log Out")
+            .setMessage("Are you sure you want to log out?")
+            .setPositiveButton("Log Out") { _, _ -> logoutUser() }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun logoutUser() {
+        sessionManager.clearSession()
+        val intent = Intent(this, LoginActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        startActivity(intent)
+        finish()
     }
 
     private fun getFileFromUri(uri: Uri): File? {

@@ -173,7 +173,8 @@
                                 android:textSize="11sp"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:fontFamily="@font/outfit_bold"/>
 
                             <TextView
                                 android:id="@+id/tvValueName"
@@ -185,7 +186,8 @@
                                 android:textSize="16sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/btnChangeUsername"
-                                app:layout_constraintTop_toBottomOf="@id/lbl_name" />
+                                app:layout_constraintTop_toBottomOf="@id/lbl_name"
+                                android:fontFamily="@font/outfit_thin"/>
 
                             <Button
                                 android:id="@+id/btnChangeUsername"
@@ -198,7 +200,8 @@
                                 android:backgroundTint="#F8F9FA"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent" />
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:fontFamily="@font/outfit_regular"/>
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
@@ -222,7 +225,8 @@
                                 android:textSize="11sp"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:fontFamily="@font/outfit_bold"/>
 
                             <TextView
                                 android:id="@+id/tvValueEmail"
@@ -234,7 +238,8 @@
                                 android:textSize="16sp"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toStartOf="@id/btnChangeEmail"
-                                app:layout_constraintTop_toBottomOf="@id/lbl_email" />
+                                app:layout_constraintTop_toBottomOf="@id/lbl_email"
+                                android:fontFamily="@font/outfit_thin"/>
 
                             <Button
                                 android:id="@+id/btnChangeEmail"
@@ -247,7 +252,8 @@
                                 android:backgroundTint="#F8F9FA"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent" />
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:fontFamily="@font/outfit_regular"/>
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <View
@@ -271,7 +277,8 @@
                                 android:textSize="11sp"
                                 android:textStyle="bold"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:fontFamily="@font/outfit_bold"/>
 
                             <TextView
                                 android:id="@+id/tvValuePassword"
@@ -296,7 +303,8 @@
                                 android:backgroundTint="#F8F9FA"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
-                                app:layout_constraintBottom_toBottomOf="parent" />
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                android:fontFamily="@font/outfit_regular"/>
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </LinearLayout>
@@ -315,7 +323,24 @@
                     android:backgroundTint="#FFF0F0"
                     app:layout_constraintTop_toBottomOf="@id/cardAccountSettings"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:fontFamily="@font/outfit_regular"/>
+
+                <Button
+                    android:id="@+id/btnLogout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:padding="16dp"
+                    android:text="Log Out"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15sp"
+                    android:backgroundTint="#212529"
+                    app:layout_constraintTop_toBottomOf="@id/btnRemovePhoto"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:fontFamily="@font/outfit_regular"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -324,9 +349,10 @@
                     android:text="JPG or PNG. Max size of 800K"
                     android:textColor="#ADB5BD"
                     android:textSize="12sp"
-                    app:layout_constraintTop_toBottomOf="@id/btnRemovePhoto"
+                    app:layout_constraintTop_toBottomOf="@id/btnLogout"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:fontFamily="@font/outfit_thin"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
