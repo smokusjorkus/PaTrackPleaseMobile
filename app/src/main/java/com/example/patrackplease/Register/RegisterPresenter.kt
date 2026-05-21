@@ -68,14 +68,12 @@ class RegisterPresenter(
     }
 
     override fun onSuccess(response: LoginResponse) {
-        // 1. Extract from the top level (matching your new LoginResponse class)
-        val token = response.token
-        val email = response.email
+        val token = response.resolvedToken()
+        val email = response.resolvedEmail()
 
         if (token != null && email != null) {
             view?.apply {
                 hideLoading()
-                // 2. Only show success if we actually have the data to save
                 showRegisterSuccess(response.message ?: "Registration Successful")
             }
 
@@ -85,14 +83,12 @@ class RegisterPresenter(
                 view?.navigateToLogin()
             }
         } else {
-            // 3. Log the error so you know exactly what the server sent back
             android.util.Log.e("REGISTER_DEBUG", "Missing Data - Token: $token, Email: $email")
 
             view?.apply {
                 hideLoading()
-                showRegisterFailed("Registration appeared to succeed, but server data is missing.")
-                // Optional: Still navigate to login if you want them to try logging in manually
-                // navigateToLogin()
+                showRegisterFailed("Registration successful. Please log in with your new account.")
+                navigateToLogin()
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.example.patrackplease.Register
 
 import android.animation.ValueAnimator
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
@@ -20,7 +21,7 @@ import com.example.patrackplease.utils.SessionManager // IMPORTED
 import com.google.android.material.textfield.TextInputEditText
 
 // FIXED: Actually changed to AppCompatActivity()
-class RegisterActivity : AppCompatActivity(), RegisterContract.View {
+class RegisterActivity : Activity(), RegisterContract.View {
 
     private lateinit var etFirstName: EditText
     private lateinit var etLastName: EditText

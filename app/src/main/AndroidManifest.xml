@@ -19,7 +19,7 @@
         <activity
             android:name=".Tasks.TaskActivity"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" /> <!-- 1. LANDING PAGE ACTIVITY (The New Entry Point) -->
+            android:theme="@style/Theme.PaTrackPlease" /> <!-- 1. LANDING PAGE ACTIVITY (The New Entry Point) -->
         <activity
             android:name=".LandingPage.LandingPageActivity"
             android:exported="true">
@@ -38,7 +38,7 @@
         <activity
             android:name=".Dashboard.DashboardActivity"
             android:exported="false"
-            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" />
+            android:theme="@style/Theme.PaTrackPlease" />
         <receiver
             android:name=".alarms.TaskAlarmReceiver"
             android:exported="false" />

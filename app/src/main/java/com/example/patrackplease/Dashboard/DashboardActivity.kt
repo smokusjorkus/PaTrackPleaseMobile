@@ -31,7 +31,7 @@ class DashboardActivity : Activity() {
 
     // Bottom Navigation & Header
     private lateinit var bottomNavigation: BottomNavigationView
-    private lateinit var ivProfile: ImageView
+
 
     // Metric Views
     private lateinit var tvCompletedCount: TextView
@@ -83,7 +83,7 @@ class DashboardActivity : Activity() {
 
     private fun initViews() {
         bottomNavigation = findViewById(R.id.bottomNavigation)
-        ivProfile = findViewById(R.id.ivProfile)
+
 
         tvCompletedCount = findViewById(R.id.tvCompletedCount)
         tvPendingCount = findViewById(R.id.tvPendingCount)
@@ -108,11 +108,6 @@ class DashboardActivity : Activity() {
         val email = sessionManager.getUserEmail()
         val displayName = email?.substringBefore("@") ?: "User"
         tvGreeting.text = "Hello, $displayName!"
-
-        ivProfile.setOnClickListener {
-            sessionManager.clearSession()
-            navigateToLogin()
-        }
     }
 
     private fun setupBottomNavigation() {
