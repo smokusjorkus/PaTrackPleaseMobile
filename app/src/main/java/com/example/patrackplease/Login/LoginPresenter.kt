@@ -31,8 +31,8 @@ class LoginPresenter(
     // ... inside LoginPresenter.kt ...
 
     override fun onSuccess(response: LoginResponse) {
-        val token = response.token
-        val email = response.email // No longer response.user?.email
+        val token = response.resolvedToken()
+        val email = response.resolvedEmail()
 
         if (token != null && email != null) {
             view?.apply {

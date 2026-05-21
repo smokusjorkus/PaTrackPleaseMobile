@@ -1,5 +1,6 @@
 package com.example.patrackplease.Register
 
+import LoginRequest
 import android.util.Patterns
 import com.example.patrackplease.api.ApiClient
 import com.example.patrackplease.Register.RegisterRequest.RegisterRequest
@@ -42,10 +43,16 @@ class RegisterModel : RegisterContract.Model {
                         val response = ApiClient.apiService.register(request)
                         withContext(Dispatchers.Main) {
                             if (response.isSuccessful && response.body() != null) {
-                                callback.onSuccess(response.body()!!)
+                                val registerResponse = response.body()!!
+                                if (registerResponse.resolvedToken() != null && registerResponse.resolvedEmail() != null) {
+                                    callback.onSuccess(registerResponse)
+                                    return@withContext
+                                }
+
+                                launchAutoLogin(email, password, callback)
                             } else {
-                                // If the backend sends an error, you can optionally read response.errorBody()?.string() to see exactly what it says
-                                callback.onFailure("Registration failed: User may already exist")
+                                val errorMessage = response.errorBody()?.string()?.takeIf { it.isNotBlank() }
+                                callback.onFailure(errorMessage ?: "Registration failed: User may already exist")
                             }
                         }
                     } catch (e: Exception) {
@@ -53,6 +60,29 @@ class RegisterModel : RegisterContract.Model {
                             callback.onFailure("Server error: ${e.message}")
                         }
                     }
+                }
+            }
+        }
+    }
+
+    private fun launchAutoLogin(
+        email: String,
+        password: String,
+        callback: RegisterContract.Model.OnRegisterFinishedListener
+    ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val loginResponse = ApiClient.apiService.login(LoginRequest(email, password))
+                withContext(Dispatchers.Main) {
+                    if (loginResponse.isSuccessful && loginResponse.body() != null) {
+                        callback.onSuccess(loginResponse.body()!!)
+                    } else {
+                        callback.onFailure("Registration successful. Please log in with your new account.")
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    callback.onFailure("Registration successful, but auto-login failed: ${e.message}")
                 }
             }
         }
